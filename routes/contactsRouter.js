@@ -1,10 +1,10 @@
 import express from "express";
 import {
   createContactController,
-  deleteContactController,
+  // deleteContactController,
   getAllContactsController,
-  getOneContactController,
-  updateContactController,
+  // getOneContactController,
+  // updateContactController,
 } from "../controllers/contactsControllers.js";
 
 import validateBody from "../helpers/validateBody.js";
@@ -18,9 +18,9 @@ const contactsRouter = express.Router();
 
 contactsRouter.get("/", getAllContactsController);
 
-contactsRouter.get("/:id", getOneContactController);
+// contactsRouter.get("/:id", getOneContactController);
 
-contactsRouter.delete("/:id", deleteContactController);
+// contactsRouter.delete("/:id", deleteContactController);
 
 contactsRouter.post(
   "/",
@@ -28,10 +28,10 @@ contactsRouter.post(
   createContactController
 );
 
-contactsRouter.put(
-  "/:id",
-  validateBody(updateContactSchema),
-  updateContactController
-);
+// contactsRouter.put(
+//   "/:id",
+//   validateBody(updateContactSchema),
+//   updateContactController
+// );
 
 export default contactsRouter;
