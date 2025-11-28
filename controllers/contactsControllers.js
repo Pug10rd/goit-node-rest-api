@@ -1,6 +1,5 @@
 import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
-import { error } from "console";
 
 export const getAllContactsController = async (req, res) => {
   const allContacts = await contactsService.listContacts();
