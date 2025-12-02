@@ -5,6 +5,7 @@ import {
   getAllContactsController,
   getOneContactController,
   updateContactController,
+  updateStatusContactController,
 } from "../controllers/contactsControllers.js";
 
 import validateBody from "../helpers/validateBody.js";
@@ -32,6 +33,12 @@ contactsRouter.put(
   "/:id",
   validateBody(updateContactSchema),
   updateContactController
+);
+
+contactsRouter.patch(
+  "/:id",
+  validateBody(updateContactSchema),
+  updateStatusContactController
 );
 
 export default contactsRouter;
