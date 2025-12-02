@@ -8,23 +8,23 @@ export const getAllContactsController = async (req, res) => {
   return res.json(allContacts);
 };
 
-// export const getOneContactController = async (req, res) => {
-//   const { id } = req.params;
-//   const contact = await contactsService.getContactById(id);
-//   if (!contact) {
-//     throw HttpError(404, `Contact with id=${id} not found`);
-//   }
-//   res.json(contact);
-// };
+export const getOneContactController = async (req, res) => {
+  const { id } = req.params;
+  const contact = await contactsService.getContactById(id);
+  if (!contact) {
+    throw HttpError(404, `Contact with id=${id} not found`);
+  }
+  res.json(contact);
+};
 
-// export const deleteContactController = async (req, res) => {
-//   const { id } = req.params;
-//   const contact = await contactsService.deleteContactById(id);
-//   if (!contact) {
-//     throw HttpError(404, `Contact with id=${id} not found`);
-//   }
-//   res.json(contact);
-// };
+export const deleteContactController = async (req, res) => {
+  const { id } = req.params;
+  const contact = await contactsService.deleteContactById(id);
+  if (!contact) {
+    throw HttpError(404, `Contact with id=${id} not found`);
+  }
+  res.json(contact);
+};
 
 export const createContactController = async (req, res) => {
   const newContact = await contactsService.addContact(req.body);
@@ -32,11 +32,23 @@ export const createContactController = async (req, res) => {
   res.status(201).json(newContact);
 };
 
-// export const updateContactController = async (req, res) => {
-//   const { id } = req.params;
-//   const updatedContact = await contactsService.updateContactById(id, req.body);
-//   if (!updatedContact) {
-//     throw HttpError(404, `Contact with id=${id} not found`);
-//   }
-//   res.json(updatedContact);
-// };
+export const updateContactController = async (req, res) => {
+  const { id } = req.params;
+  const updatedContact = await contactsService.updateContactById(id, req.body);
+  if (!updatedContact) {
+    throw HttpError(404, `Contact with id=${id} not found`);
+  }
+  res.json(updatedContact);
+};
+
+export const updateStatusContactController = async (req, res) => {
+  const { id } = req.params;
+  const updateContactStatus = await contactsService.updateStatusContact(
+    id,
+    req.body
+  );
+  if (!updateContactStatus) {
+    throw HttpError(404, `Contact with id=${id} not found`);
+  }
+  res.json(updateContactStatus);
+};

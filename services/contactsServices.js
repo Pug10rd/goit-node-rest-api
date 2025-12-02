@@ -1,15 +1,15 @@
-import fs from "fs/promises";
-import path from "path";
-import { nanoid } from "nanoid";
-import { fileURLToPath } from "url";
+// import fs from "fs/promises";
+// import path from "path";
+// import { nanoid } from "nanoid";
+// import { fileURLToPath } from "url";
 
 import Contact from "./db/models/Contact.js";
 
-export const listContacts = () => {
-  Contact.findAll();
-};
+export const listContacts = () => Contact.findAll();
 
 export const addContact = (payload) => Contact.create(payload);
+
+export const getContactById = (id) => Contact.findByPk(id);
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
@@ -31,23 +31,26 @@ export const addContact = (payload) => Contact.create(payload);
 //   return result || null;
 // }
 
-// export const updateContactById = async (contactId, payload) => {
-//   const contacts = await listContacts();
-//   const index = contacts.findIndex((item) => item.id === contactId);
-//   if (index === -1) return null;
-//   contacts[index] = { ...contacts[index], ...payload };
-//   await updateContacts(contacts);
-//   return contacts[index];
-// };
+export const updateContactById = async (contactId, payload) => {
+  const contact = await getContactById(contactId);
+  if (!contact) return null;
+  await contact.update(payload);
+  return contact;
+};
 
-// export const deleteContactById = async (contactId) => {
-//   const contacts = await listContacts();
-//   const index = contacts.findIndex((item) => item.id === contactId);
-//   if (index === -1) return null;
-//   const [result] = contacts.splice(index, 1);
-//   await updateContacts(contacts);
-//   return result;
-// };
+export const updateStatusContact = async (contactId) => {
+  const contact = await getContactById(contactId);
+  if (!contact) return null;
+  await contact.update({ favorite: !contact.favorite });
+  return contact;
+};
+
+export const deleteContactById = async (contactId) => {
+  const contact = await getContactById(contactId);
+  if (!contact) return null;
+  await contact.destroy(contactId);
+  return contact;
+};
 
 // export async function addContact(payload) {
 //   const contacts = await listContacts();
@@ -62,8 +65,9 @@ export const addContact = (payload) => Contact.create(payload);
 
 export default {
   listContacts,
-  //   getContactById,
-  //   updateContactById,
-  //   deleteContactById,
+  getContactById,
+  updateContactById,
+  updateStatusContact,
+  deleteContactById,
   addContact,
 };
