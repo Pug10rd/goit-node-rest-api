@@ -2,15 +2,16 @@ import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 
 export const getAllContactsController = async (req, res) => {
-  const allContacts = await contactsService.listContacts();
-  console.log(res);
+  const { id: owner } = req.user;
+  const allContacts = await contactsService.listContacts({ owner });
 
-  return res.json(allContacts);
+  res.json(allContacts);
 };
 
 export const getOneContactController = async (req, res) => {
   const { id } = req.params;
-  const contact = await contactsService.getContactById(id);
+  const { id: owner } = req.user;
+  const contact = await contactsService.getContactById({ id, owner });
   if (!contact) {
     throw HttpError(404, `Contact with id=${id} not found`);
   }
@@ -19,7 +20,8 @@ export const getOneContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
   const { id } = req.params;
-  const contact = await contactsService.deleteContactById(id);
+  const { id: owner } = req.user;
+  const contact = await contactsService.deleteContactById({ id, owner });
   if (!contact) {
     throw HttpError(404, `Contact with id=${id} not found`);
   }
@@ -27,14 +29,19 @@ export const deleteContactController = async (req, res) => {
 };
 
 export const createContactController = async (req, res) => {
-  const newContact = await contactsService.addContact(req.body);
+  const { id: owner } = req.user;
+  const newContact = await contactsService.addContact({ ...req.body, owner });
 
   res.status(201).json(newContact);
 };
 
 export const updateContactController = async (req, res) => {
   const { id } = req.params;
-  const updatedContact = await contactsService.updateContactById(id, req.body);
+  const { id: owner } = req.user;
+  const updatedContact = await contactsService.updateContactById(
+    { id, owner },
+    req.body
+  );
   if (!updatedContact) {
     throw HttpError(404, `Contact with id=${id} not found`);
   }
@@ -43,8 +50,9 @@ export const updateContactController = async (req, res) => {
 
 export const updateStatusContactController = async (req, res) => {
   const { id } = req.params;
+  const { id: owner } = req.user;
   const updateContactStatus = await contactsService.updateStatusContact(
-    id,
+    { id, owner },
     req.body
   );
   if (!updateContactStatus) {
