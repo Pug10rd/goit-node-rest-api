@@ -1,10 +1,13 @@
 import path from "node:path";
 import {
+  findUser,
   loginUser,
   logoutUser,
   refreshUser,
   registerUser,
+  resendVerifyUser,
   updateAvatar,
+  verifyUser,
 } from "../services/authServices.js";
 
 import fs from "fs/promises";
@@ -15,6 +18,23 @@ export const registerController = async (req, res) => {
   res.status(201).json({
     email: newUser.email,
     subscription: newUser.subscription,
+  });
+};
+
+export const verifyController = async (req, res) => {
+  const { verificationToken } = req.params;
+  await verifyUser(verificationToken);
+
+  res.json({
+    message: "Successfully verify email",
+  });
+};
+
+export const resendVerifyController = async (req, res) => {
+  await resendVerifyUser(req.body);
+
+  res.json({
+    message: "Verify email resend success",
   });
 };
 
